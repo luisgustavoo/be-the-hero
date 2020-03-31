@@ -7,7 +7,7 @@ module.exports = {
 
         const [count] = await connection('incidents').count();
 
-        console.log(count);
+        // console.log(count);
 
         const incidents = await connection('incidents')
             .join('ongs', 'ongs.id', '=', 'incidents.ong_id')
@@ -35,9 +35,17 @@ module.exports = {
         const { id } = request.params;
         const ong_id = request.headers.authorization;
 
-        const incidents = connection('incidents').where('id', id).select('ong_id').first();
+        //console.log(id);
+        console.log(ong_id);
 
-        if (incidents.ong_id != ong_id) {
+        const incident = await connection('incidents').where('id', id).select('ong_id').first();
+
+        //console.log(count);
+
+        console.log(incident);
+
+        if (incident.ong_id != ong_id) {
+            console.log("Entrou");
             return response.status(401).json({ erro: "Operation not permitted!" });
         }
 
